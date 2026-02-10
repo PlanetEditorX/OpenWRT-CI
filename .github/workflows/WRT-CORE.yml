@@ -104,11 +104,10 @@ jobs:
             sed -i '/.cn\//d; /tencent/d; /aliyun/d' "$PROJECT_MIRRORS_FILE"
           fi
 
-      - name: Apply Custom Patches
+      - name: Replace DTS for Big UBI
         if: env.WRT_CONFIG == 'IPQ60XX-WIFI-NO'
         run: |
-          cd ./wrt/
-          git apply $GITHUB_WORKSPACE/Patches/ipq6000-cmiot-bigubi.patch
+          cp $GITHUB_WORKSPACE/Patches/ipq6000-cmiot.dtsi ./wrt/target/linux/ipq60xx/files/arch/arm64/boot/dts/qcom/ipq6000-cmiot.dtsi
 
       - name: Check Scripts
         run: |

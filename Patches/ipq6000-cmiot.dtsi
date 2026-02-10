@@ -1,0 +1,256 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+
+#include "ipq6018.dtsi"
+#include "ipq6018-ess.dtsi"
+#include "ipq6018-nss.dtsi"
+#include "ipq6018-common.dtsi"
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+#include <dt-bindings/leds/common.h>
+
+/ {
+    aliases {
+        serial0 = &blsp1_uart3;
+
+        ethernet0 = &dp1;
+        ethernet1 = &dp2;
+        ethernet3 = &dp4;
+        ethernet4 = &dp5;
+    };
+
+    chosen {
+        stdout-path = "serial0:115200n8";
+        bootargs-append = " root=/dev/ubiblock0_1";
+    };
+
+    keys {
+        compatible = "gpio-keys";
+
+        reset {
+            label = "reset";
+            gpios = <&tlmm 60 GPIO_ACTIVE_LOW>;
+            linux,code = <KEY_RESTART>;
+        };
+
+        wps {
+            label = "wps";
+            gpios = <&tlmm 9 GPIO_ACTIVE_LOW>;
+            linux,code = <KEY_WPS_BUTTON>;
+        };
+    };
+};
+
+&mdio {
+    status = "okay";
+
+    pinctrl-0 = <&mdio_pins>;
+    pinctrl-names = "default";
+    reset-gpios = <&tlmm 75 GPIO_ACTIVE_LOW>;
+
+    ethernet-phy-package@0 {
+        compatible = "qcom,qca8075-package";
+        #address-cells = <1>;
+        #size-cells = <0>;
+        reg = <0>;
+
+        qca8075_0: ethernet-phy@0 {
+            compatible = "ethernet-phy-ieee802.3-c22";
+            reg = <0>;
+        };
+
+        qca8075_1: ethernet-phy@1 {
+            compatible = "ethernet-phy-ieee802.3-c22";
+            reg = <1>;
+        };
+
+        qca8075_3: ethernet-phy@3 {
+            compatible = "ethernet-phy-ieee802.3-c22";
+            reg = <3>;
+        };
+
+        qca8075_4: ethernet-phy@4 {
+            compatible = "ethernet-phy-ieee802.3-c22";
+            reg = <4>;
+        };
+    };
+};
+
+&switch {
+    status = "okay";
+
+    switch_lan_bmp = <(ESS_PORT1 | ESS_PORT2 | ESS_PORT4)>;
+    switch_wan_bmp = <ESS_PORT5>;
+    switch_mac_mode = <MAC_MODE_PSGMII>;
+
+    qcom,port_phyinfo {
+        port@1 {
+            port_id = <1>;
+            phy_address = <0>;
+        };
+
+        port@2 {
+            port_id = <2>;
+            phy_address = <1>;
+        };
+
+        port@4 {
+            port_id = <4>;
+            phy_address = <3>;
+        };
+
+        port@5 {
+            port_id = <5>;
+            phy_address = <4>;
+        };
+    };
+};
+
+&qpic_nand {
+    status = "okay";
+
+    nand@0 {
+        reg = <0>;
+
+        nand-ecc-strength = <4>;
+        nand-ecc-step-size = <512>;
+        nand-bus-width = <8>;
+
+        /* ★★★ 大分区版：替换 smem-part 为 fixed-partitions ★★★ */
+        partitions {
+            compatible = "fixed-partitions";
+            #address-cells = <1>;
+            #size-cells = <1>;
+
+            partition@0 {
+                label = "0:sbl1";
+                reg = <0x00000000 0x00180000>;
+                read-only;
+            };
+
+            partition@180000 {
+                label = "0:mibib";
+                reg = <0x00180000 0x00100000>;
+                read-only;
+            };
+
+            partition@280000 {
+                label = "0:bootconfig";
+                reg = <0x00280000 0x00080000>;
+                read-only;
+            };
+
+            partition@300000 {
+                label = "0:bootconfig1";
+                reg = <0x00300000 0x00080000>;
+                read-only;
+            };
+
+            partition@380000 {
+                label = "0:qsee";
+                reg = <0x00380000 0x00380000>;
+                read-only;
+            };
+
+            partition@700000 {
+                label = "0:qsee_1";
+                reg = <0x00700000 0x00380000>;
+                read-only;
+            };
+
+            partition@a80000 {
+                label = "0:devcfg";
+                reg = <0x00A80000 0x00080000>;
+                read-only;
+            };
+
+            partition@b00000 {
+                label = "0:devcfg_1";
+                reg = <0x00B00000 0x00080000>;
+                read-only;
+            };
+
+            partition@b80000 {
+                label = "0:rpm";
+                reg = <0x00B80000 0x00080000>;
+                read-only;
+            };
+
+            partition@c00000 {
+                label = "0:rpm_1";
+                reg = <0x00C00000 0x00080000>;
+                read-only;
+            };
+
+            partition@c80000 {
+                label = "0:cdt";
+                reg = <0x00C80000 0x00080000>;
+                read-only;
+            };
+
+            partition@d00000 {
+                label = "0:cdt_1";
+                reg = <0x00D00000 0x00080000>;
+                read-only;
+            };
+
+            partition@d80000 {
+                label = "0:appsblenv";
+                reg = <0x00D80000 0x00080000>;
+                read-only;
+            };
+
+            partition@e00000 {
+                label = "0:appsbl";
+                reg = <0x00E00000 0x00180000>;
+                read-only;
+            };
+
+            partition@f80000 {
+                label = "0:appsbl_1";
+                reg = <0x00F80000 0x00180000>;
+                read-only;
+            };
+
+            partition@1100000 {
+                label = "0:art";
+                reg = <0x01100000 0x00080000>;
+                read-only;
+            };
+
+            /* ★★★ 大 UBI 分区：吃满剩余 NAND ★★★ */
+            partition@1180000 {
+                label = "ubi";
+                reg = <0x01180000 0x06E80000>;
+            };
+        };
+    };
+};
+
+&dp1 {
+    status = "okay";
+    phy-handle = <&qca8075_0>;
+    label = "lan3";
+};
+
+&dp2 {
+    status = "okay";
+    phy-handle = <&qca8075_1>;
+    label = "lan2";
+};
+
+&dp4 {
+    status = "okay";
+    phy-handle = <&qca8075_3>;
+    label = "lan1";
+};
+
+&dp5 {
+    status = "okay";
+    phy-handle = <&qca8075_4>;
+    label = "wan";
+};
+
+&edma {
+    status = "okay";
+};
