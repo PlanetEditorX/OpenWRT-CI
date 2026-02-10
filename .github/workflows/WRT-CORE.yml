@@ -107,7 +107,9 @@ jobs:
       - name: Replace DTS for Big UBI
         if: env.WRT_CONFIG == 'IPQ60XX-WIFI-NO'
         run: |
-          cp $GITHUB_WORKSPACE/Patches/ipq6000-cmiot.dtsi ./wrt/target/linux/ipq60xx/files/arch/arm64/boot/dts/qcom/ipq6000-cmiot.dtsi
+          cd ./wrt/
+          find target -type f -name "ipq6000-cmiot.dtsi"
+          cp $GITHUB_WORKSPACE/Patches/ipq6000-cmiot.dtsi target/linux/qualcommax/files/arch/arm64/boot/dts/qcom/ipq6000-cmiot.dtsi
 
       - name: Check Scripts
         run: |
