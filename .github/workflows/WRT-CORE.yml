@@ -104,6 +104,12 @@ jobs:
             sed -i '/.cn\//d; /tencent/d; /aliyun/d' "$PROJECT_MIRRORS_FILE"
           fi
 
+      - name: Apply Custom Patches
+        if: env.WRT_CONFIG == 'IPQ60XX-WIFI-NO'
+        run: |
+          cd ./wrt/
+          git apply $GITHUB_WORKSPACE/Patches/ipq6000-cmiot-bigubi.patch
+
       - name: Check Scripts
         run: |
           find ./ -maxdepth 3 -type f -iregex ".*\(txt\|sh\)$" -exec dos2unix {} \; -exec chmod +x {} \;
