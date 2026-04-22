@@ -46,7 +46,6 @@ UPDATE_PACKAGE() {
 			ls -l "$PKG_NAME"
 	else
 			echo "❌ [$PKG_NAME] 拉取失败！"
-			exit 1
 	fi
 }
 
