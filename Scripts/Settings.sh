@@ -66,3 +66,21 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 	#其他调整
 	echo "CONFIG_PACKAGE_kmod-usb-serial-qualcomm=y" >> ./.config
 fi
+
+# Docker 开关
+if [[ "$WRT_DOCKER" == "true" ]]; then
+    echo "CONFIG_PACKAGE_dockerd=y" >> .config
+    echo "CONFIG_PACKAGE_docker=y" >> .config
+    echo "CONFIG_PACKAGE_docker-compose=y" >> .config
+    echo "CONFIG_PACKAGE_luci-app-dockerman=y" >> .config
+    echo "CONFIG_PACKAGE_kmod-veth=y" >> .config
+    echo "CONFIG_PACKAGE_kmod-br-netfilter=y" >> .config
+    echo "CONFIG_PACKAGE_kmod-ipt-nat=y" >> .config
+    echo "CONFIG_PACKAGE_kmod-nf-conntrack=y" >> .config
+    echo "CONFIG_PACKAGE_kmod-nf-nat=y" >> .config
+		echo "CONFIG_PACKAGE_kmod-fs-overlay=y" >> .config
+		echo "CONFIG_PACKAGE_kmod-fs-ext4=y" >> .config
+    echo "Docker enabled!"
+else
+    echo "Docker disabled!"
+fi

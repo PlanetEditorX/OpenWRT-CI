@@ -11,6 +11,11 @@ on:
   #手动编译
   workflow_dispatch:
     inputs:
+      DOCKER:
+        description: '是否启用 Docke'
+        required: false
+        default: true
+        type: boolean
       PACKAGE:
         description: '手动调整插件包，多个请用\n符号隔开。'
         required: false
@@ -63,3 +68,5 @@ jobs:
       WRT_PACKAGE: ${{inputs.PACKAGE}}
       #仅输出配置文件
       WRT_TEST: ${{inputs.TEST}}
+      #docker配置
+      WRT_DOCKER: ${{inputs.DOCKER}}
