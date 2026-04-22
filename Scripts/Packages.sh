@@ -38,6 +38,16 @@ UPDATE_PACKAGE() {
 	elif [[ "$PKG_SPECIAL" == "name" ]]; then
 		mv -f $REPO_NAME $PKG_NAME
 	fi
+
+	# 验证是否拉取成功
+	if [ -d "$PKG_NAME" ]; then
+			echo ">>> [$PKG_NAME] 拉取成功！"
+			echo ">>> [$PKG_NAME] 文件列表："
+			ls -l "$PKG_NAME"
+	else
+			echo "❌ [$PKG_NAME] 拉取失败！"
+			exit 1
+	fi
 }
 
 # 调用示例
@@ -71,6 +81,8 @@ UPDATE_PACKAGE "qmodem" "FUjr/QModem" "main"
 UPDATE_PACKAGE "quickfile" "sbwml/luci-app-quickfile" "main"
 UPDATE_PACKAGE "viking" "VIKINGYFY/packages" "main" "" "luci-app-timewol luci-app-wolplus"
 UPDATE_PACKAGE "vnt" "lmq8267/luci-app-vnt" "main"
+
+UPDATE_PACKAGE "luci-app-keepalived-ha" "PlanetEditorX/luci-app-build" "main" "pkg"
 
 #更新软件包版本
 UPDATE_VERSION() {

@@ -84,3 +84,11 @@ if [[ "$WRT_DOCKER" == "true" ]]; then
 else
     echo "Docker disabled!"
 fi
+
+# keepalived
+if [[ "$WRT_KEEPALIVED" == "true" ]]; then
+    echo ">>> Inject keepalived.config"
+    cat $GITHUB_WORKSPACE/Config/keepalived.config >> .config
+else
+    echo "Keepalived plugins disabled!"
+fi
