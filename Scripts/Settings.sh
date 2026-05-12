@@ -92,3 +92,11 @@ if [[ "$WRT_KEEPALIVED" == "true" ]]; then
 else
     echo "Keepalived plugins disabled!"
 fi
+
+# OpenAppFilter
+if [[ "$WRT_ENABLE_OPENAPPFILTER" == "true" ]]; then
+    echo ">>> Inject OpenAppFilter.config"
+    echo "CONFIG_PACKAGE_luci-app-oaf=y" >>.config
+else
+    echo "OpenAppFilter plugins disabled!"
+fi

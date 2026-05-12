@@ -46,7 +46,9 @@ on:
       WRT_KEEPALIVED:
         required: false
         type: string
-
+      WRT_ENABLE_OPENAPPFILTER:
+        required: false
+        type: string
 env:
   GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
   WRT_CONFIG: ${{inputs.WRT_CONFIG}}
@@ -63,6 +65,7 @@ env:
   WRT_TEST: ${{inputs.WRT_TEST}}
   WRT_DOCKER: ${{inputs.WRT_DOCKER}}
   WRT_KEEPALIVED: ${{inputs.WRT_KEEPALIVED}}
+  WRT_ENABLE_OPENAPPFILTER: ${{inputs.WRT_ENABLE_OPENAPPFILTER}}
 
 jobs:
   core:

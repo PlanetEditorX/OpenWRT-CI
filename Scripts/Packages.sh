@@ -82,6 +82,7 @@ UPDATE_PACKAGE "viking" "VIKINGYFY/packages" "main" "" "luci-app-timewol luci-ap
 UPDATE_PACKAGE "vnt" "lmq8267/luci-app-vnt" "main"
 
 UPDATE_PACKAGE "luci-app-keepalived-ha" "PlanetEditorX/luci-app-build" "main" "pkg"
+UPDATE_PACKAGE "luci-app-oaf" "destan19/OpenAppFilter" "master" "pkg"
 
 #更新软件包版本
 UPDATE_VERSION() {

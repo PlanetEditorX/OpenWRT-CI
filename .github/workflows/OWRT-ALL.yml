@@ -21,6 +21,11 @@ on:
         type: boolean
         required: true
         default: true
+      ENABLE_OPENAPPFILTER:
+        description: '集成OpenAppFilter'
+        type: boolean
+        required: true
+        default: true
       PACKAGE:
         description: '手动调整插件包，多个请用\n符号隔开。'
         required: false
@@ -77,3 +82,5 @@ jobs:
       WRT_DOCKER: ${{ inputs.DOCKER || 'true' }}
       #keepalived
       WRT_KEEPALIVED: ${{ inputs.ENABLE_KEEPALIVED || 'true' }}
+      #OpenAppFilter
+      WRT_ENABLE_OPENAPPFILTER: ${{ inputs.ENABLE_OPENAPPFILTER || 'true' }}
