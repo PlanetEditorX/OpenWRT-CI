@@ -44,8 +44,6 @@ UPDATE_PACKAGE() {
 			echo ">>> [$PKG_NAME] 拉取成功！"
 			echo ">>> [$PKG_NAME] 文件列表："
 			ls -l "$PKG_NAME"
-	else
-			echo "❌ [$PKG_NAME] 拉取失败！"
 	fi
 }
 
