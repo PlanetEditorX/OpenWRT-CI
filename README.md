@@ -48,5 +48,33 @@ Scripts——自定义脚本
 
 Config——自定义配置
 
-#
-[![Stargazers over time](https://starchart.cc/VIKINGYFY/OpenWRT-CI.svg?variant=adaptive)](https://starchart.cc/VIKINGYFY/OpenWRT-CI)
+# Docker
+1. 看看有没有安装 fuse-overlayfs：
+  ```bash
+  which fuse-overlayfs
+  ```
+2. 如果没有：
+  ```bash
+  opkg update
+  opkg install fuse-overlayfs
+  ```
+3. 然后改 Docker：
+  ```bash
+  uci set dockerd.globals.storage_driver='fuse-overlayfs'
+  uci commit dockerd
+  /etc/init.d/dockerd restart
+  ```
+4. 查看：
+  ```bash
+  # 输入
+  docker info | grep "Storage Driver"
+  # 输出
+  Storage Driver: fuse-overlayfs
+  ```
+5. 修改加速镜像：
+   dockerman→配置→Registry 镜像：`https://docker.1panel.live`
+6. 测试：
+  ```bash
+  docker run --rm hello-world
+  ```
+
